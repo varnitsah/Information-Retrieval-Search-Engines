@@ -1,0 +1,48 @@
+
+
+// NEW SHELL
+export PATH=${JAVA_HOME}/bin:${PATH}
+export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
+
+
+// FOR INVERTED INDEX
+vi II.java
+hadoop com.sun.tools.javac.Main II.java
+jar cf ii6.jar II*.class
+
+hadoop fs -copyFromLocal ./ii6.jar
+hadoop fs -cp ./ii6.jar gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/ii6.jar
+
+hadoop jar ii6.jar II gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/development/dev_data gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/output
+
+hadoop fs -getmerge gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/output ./output2.txt
+hadoop fs -copyFromLocal ./output2.txt
+hadoop fs -cp ./output2.txt gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/output2.txt
+
+
+
+// BRAM STOKER
+
+hadoop jar ii6.jar II gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/bramStoker gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/outputStoker
+
+hadoop fs -getmerge gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/outputStoker ./output_bram_stroker.txt
+hadoop fs -copyFromLocal ./output_bram_stroker.txt
+hadoop fs -cp ./output_bram_stroker.txt gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/output_bram_stroker.txt
+
+
+// FULL DATA
+
+hadoop jar invertedindex.jar InvertedIndex gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/full_data/full_data gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/output_full
+
+hadoop fs -getmerge gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/output1 ./output_full.txt
+hadoop fs -copyFromLocal ./output_full.txt
+hadoop fs -cp ./output_full.txt gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/output_full.txt
+
+
+
+//EXTRA
+hadoop com.sun.tools.javac.Main InvertedIndex3.java
+jar cf invertedindex3_1.jar InvertedIndex3*.class
+
+hadoop fs -copyFromLocal ./invertedindex3_1.jar
+hadoop fs -cp ./invertedindex3.jar gs://dataproc-1a827518-6b9d-4d03-9d4f-6782f49e30aa-us/invertedindex3.jar

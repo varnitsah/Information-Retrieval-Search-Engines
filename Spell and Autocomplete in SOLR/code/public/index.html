@@ -1,0 +1,52 @@
+<html>
+<head>
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body ng-app="myApp" ng-controller="mycontroller">
+	<br>
+	<p>
+		<input type="text" ng-change="autocomplete()" ng-model="inputData"/>
+		<button ng-click="search()">Search</button>
+	</p>
+	<label>
+
+    <input type="radio" ng-model="choice" value="1">Default
+  	</label>
+ 	<label>
+    	<input type="radio" ng-model="choice" value="2">PageRank
+  	</label><br>
+  	<div ng-if="autocompleteDisplay">
+  		<span ng-repeat="item in suggestions">
+  			<span ng-click="changeToSuggestion(item)">{{item}}</span><br>
+
+  		</span>
+  	</div>
+	<div ng-if="mistake">
+		<span>Did you mean <a ng-click="correctClick()">{{correctWord}}?</a></span>
+	</div>
+
+
+	<div ng-if="display">
+	<hr>
+		<div ng-repeat="row in result">
+			Title: {{row.title[0]}} <br>
+			<span ng-if="row.og_url.length>0">Link: <a href= {{row.og_url[0]}} target="_blank" >{{row.og_url[0]}}</a> <br></span>
+			<span ng-if="!(row.og_url.length>0)">Link: None <br></span>
+			<span ng-if="row.description.length>0">Desc: {{row.description[0]}} | {{snippets[$index]}}<br></span>
+			<span ng-if="!(row.description.length>0)">Desc: {{snippets[$index]}} <br></span>
+			{{row.id}}
+			<hr>
+		</div>
+			
+	</div>
+</body>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>  -->
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script> --> 
+<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+<script src="script.js"></script>
+</html>

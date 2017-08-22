@@ -1,0 +1,100 @@
+<html>
+<head>
+
+
+<!-- Latest compiled and minified JavaScript -->
+
+</head>
+
+<body ng-app="myApp" ng-controller="mycontroller">
+	<p>
+		<input ng-model="inputData" />
+		<button ng-click="search()">Search</button>
+	</p>
+	<label>
+    <input type="radio" ng-model="choice" value="1">Default
+  	</label>
+ 	<label>
+    	<input type="radio" ng-model="choice" value="2">PageRank
+  	</label>
+
+	<div ng-if="display">
+	<hr>
+		<div ng-repeat="row in result">
+			Title: {{row.title[0]}} <br>
+			<span ng-if="row.og_url.length>0">Link: <a href= {{row.og_url[0]}} target="_blank" >{{row.og_url[0]}}</a> <br></span>
+			<span ng-if="!(row.og_url.length>0)">Link: None <br></span>
+			<span ng-if="row.description.length>0">Desc: {{row.description[0]}}<br></span>
+			<span ng-if="!(row.description.length>0)">Desc: None <br></span>
+			{{row.id}}
+			<hr>
+		</div>
+			
+	</div>
+</body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script>
+angular.module('myApp',[])
+.controller("mycontroller",function($scope, $http){
+	$scope.choice="1";
+	$scope.display="false";
+
+	$scope.search=function(){
+		$scope.display="false";
+
+		console.log($scope.choice);
+
+		if($scope.inputData=="")
+			return;
+		if($scope.choice=="1")
+		{
+			console.log("Hello");
+			$scope.display=true;		
+ 			var req = {
+				method: 'POST',
+ 				url: 'api/search',
+ 				data: { q: $scope.inputData }
+ 			}
+	 		$http(req).then(
+	 			function success(data){
+	 				var temp= angular.fromJson(data.data);
+	 				$scope.result= temp.response.docs;
+ 					for(i=0;i<9;i++)
+						console.log($scope.result[i].id);
+ 				}, 
+ 				function error(data){
+ 					console.log("error");
+	 			}
+ 			);
+		}
+	
+ 		if($scope.choice=="2")
+ 		{
+ 			console.log("here");
+ 			$scope.display=true;
+ 			var req = {
+				method: 'POST',
+ 				url: 'api/search2',
+ 				data: { q: $scope.inputData }
+ 			}
+	 		$http(req).then(
+	 			function success(data){
+	 				var temp= angular.fromJson(data.data);
+	 				$scope.result= temp.response.docs;
+	 				for(i=0;i<9;i++)
+						console.log($scope.result[i].id);
+	 				
+	 				
+ 				
+ 				}, 
+ 				function error(data){
+ 					console.log("error");
+	 			}
+ 			);
+ 		}
+	};
+});
+</script>
+</html>

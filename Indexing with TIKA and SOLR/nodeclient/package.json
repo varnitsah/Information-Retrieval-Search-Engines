@@ -1,0 +1,13 @@
+{
+  "name": "node-angular",
+  "version": "0.0.0",
+  "description": "Sample node angular app",
+  "main": "server.js",
+  "author": "Varnit SAh",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "method-override": "^2.1.3",
+    "morgan": "^1.1.1"
+  }
+}
